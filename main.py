@@ -166,6 +166,8 @@ Michael.place(x=920, y=220)
 #Frame y seleccion de personajes            #
 #############################################
 
+###Fondo personajes###
+
 frame_personajes = tk.Frame(root, width = 1280, height=720, bg="black")
 
 ruta_fondo_personajes = "Assets\\Imagenes\\Fondos\\Fondo personajes.png"
@@ -176,23 +178,34 @@ fondo_personajes_tk = ImageTk.PhotoImage(fondo_personajes)
 fondo = tk.Label(frame_personajes, image=fondo_personajes_tk)
 fondo.place(x=0, y=0)
 
+###botones personajes###
+
+ruta_fondo_personajes = "Assets\\Imagenes\\Fondos\\Fondo personajes.png"
+fondo_personajes = Image.open(ruta_fondo_personajes)
+fondo_personajes = fondo_personajes.resize((1280,720))
+fondo_personajes_tk = ImageTk.PhotoImage(fondo_personajes)
+
+fondo = tk.Label(frame_personajes, image=fondo_personajes_tk)
+fondo.place(x=0, y=0)
+
+
 #############################################
 #Mapa y seleccion de nivel                  #
 #############################################
 
-#frame_mapa = tk.Frame(root, width = 1280, height=720, bg="black")
+frame_mapa = tk.Frame(root, width = 1280, height=720, bg="black")
 
-#ruta_fondo_mapa = "Assets\\Imagenes\\Mapa\\il (1).png"
-#fondo_avatares = Image.open(ruta_fondo_avatares)
-#fondo_personajes = fondo_avatares.resize((1280,720))
-#fondo_avatares_tk = ImageTk.PhotoImage(fondo_avatares)
+ruta_fondo_mapa = "Assets\\Imagenes\\Mapa\\mapa.png"
+fondo_mapa = Image.open(ruta_fondo_mapa)
+fondo_mapa = fondo_mapa.resize((1280,720))
+fondo_mapa_tk = ImageTk.PhotoImage(fondo_mapa)
 
-#fondo = tk.Label(frame_avatares, image=fondo_avatares_tk)
-#fondo.place(x=0, y=0)
+fondo = tk.Label(frame_mapa, image=fondo_mapa_tk)
+fondo.place(x=0, y=0)
 
-#def ir_a_mapa():
-        #frame_avatares.forget()
-        #frame_mapa.place(x=0, y=0)
+def ir_a_mapa():
+        frame_avatares.forget()
+        frame_mapa.place(x=0, y=0)
 
 
 ######################
