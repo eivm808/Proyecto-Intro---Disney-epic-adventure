@@ -33,8 +33,8 @@ fondomenu = Image.open(ruta_fondomenu)
 fondomenu = fondomenu.resize((1280,720))
 fondomenu_tk = ImageTk.PhotoImage(fondomenu)
 
-fondo = tk.Label(frame_menu, image=fondomenu_tk)
-fondo.place(x=0, y=0)
+fondo_me = tk.Label(frame_menu, image=fondomenu_tk)
+fondo_me.place(x=0, y=0)
 
 #############################################
 #Titulo del juego                           #
@@ -104,8 +104,8 @@ fondo_avatares = Image.open(ruta_fondo_avatares)
 fondo_personajes = fondo_avatares.resize((1280,720))
 fondo_avatares_tk = ImageTk.PhotoImage(fondo_avatares)
 
-fondo = tk.Label(frame_avatares, image=fondo_avatares_tk)
-fondo.place(x=0, y=0)
+fondo_av = tk.Label(frame_avatares, image=fondo_avatares_tk)
+fondo_av.place(x=0, y=0)
 
 #Boton play
 
@@ -175,18 +175,234 @@ fondo_personajes = Image.open(ruta_fondo_personajes)
 fondo_personajes = fondo_personajes.resize((1280,720))
 fondo_personajes_tk = ImageTk.PhotoImage(fondo_personajes)
 
-fondo = tk.Label(frame_personajes, image=fondo_personajes_tk)
-fondo.place(x=0, y=0)
+fondo_pe = tk.Label(frame_personajes, image=fondo_personajes_tk)
+fondo_pe.place(x=0, y=0)
 
-###botones personajes###
 
-ruta_fondo_personajes = "Assets\\Imagenes\\Fondos\\Fondo personajes.png"
-fondo_personajes = Image.open(ruta_fondo_personajes)
-fondo_personajes = fondo_personajes.resize((1280,720))
-fondo_personajes_tk = ImageTk.PhotoImage(fondo_personajes)
+###SELECCIONES DE BOTONES###
 
-fondo = tk.Label(frame_personajes, image=fondo_personajes_tk)
-fondo.place(x=0, y=0)
+#Leer archivo de texto
+
+def cargar_personajes():
+     personajes = []
+     archivo = open("data\\personajes.txt", "r") #open abre el archivo
+     for linea in archivo:#recorre cada linea
+          linea = linea.strip()
+          datos = linea.split(",")#convierte en una lista
+          personaje = {
+               "nombre": datos[0],
+               "HP": int(datos[1]),
+               "ATK": int(datos[2]),#convierte el texto a int
+               "DEF": int(datos[3]),
+
+          }
+          personajes.append(personaje)#agrega a la lista
+     archivo.close()
+     return personajes
+
+lista_personajes = cargar_personajes()
+
+#Funcion ver personajes, Boton SELECT
+
+label_nombre_panel = tk.Label(frame_personajes, text="", font=("Courier New", 20), fg="green", bg="black")
+label_nombre_panel.place(x = 190, y=290)
+
+label_hp = tk.Label(frame_personajes, text="", font=("Courier New", 18), fg="green", bg="black")
+label_hp.place(x=200, y=360)
+
+label_atk = tk.Label(frame_personajes, text="", font=("Courier New", 18), fg="green", bg="black")
+label_atk.place(x = 200, y=415)
+
+label_def = tk.Label(frame_personajes, text="", font=("Courier New", 18), fg="green", bg="black")
+label_def.place(x=200, y=470)
+
+avatar_seleccionado = None
+personaje_actual = None
+
+def ver_personajes(nombre, hp, atk, defensa):
+     global personaje_actual
+     personaje_actual = {"nombre": nombre, "HP": hp, "ATK": atk, "DEF": defensa}
+     label_nombre_panel.config(text=nombre)
+     label_hp.config(text=f"HP: {hp}")
+     label_atk.config(text=f"ATK: {atk}")
+     label_def.config(text=f"DEF: {defensa}")
+
+###Botones###
+
+#Freddy
+
+ruta_freddy = "Assets\\Imagenes\\Personajes\\Freddy.png"
+foto_freddy = Image.open(ruta_freddy)
+foto_freddy = foto_freddy.resize((100,100))
+foto_freddy_tk = ImageTk.PhotoImage(foto_freddy)
+
+btn_freddy = tk.Button(frame_personajes, image=foto_freddy_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[0]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"]))
+btn_freddy.place(x=600,y=200)
+
+
+#Withered bonnie
+
+ruta_wbonnie = "Assets\\Imagenes\\Personajes\\W. Bonnie.png"
+foto_wbonnie = Image.open(ruta_wbonnie)
+foto_wbonnie = foto_wbonnie.resize((100,100))
+foto_wbonnie_tk = ImageTk.PhotoImage(foto_wbonnie)
+
+btn_wbonnie = tk.Button(frame_personajes, image=foto_wbonnie_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[1]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"]))
+btn_wbonnie.place(x=720,y=200)
+
+#Nightmare Fredbear
+
+ruta_fredbear = "Assets\\Imagenes\\Personajes\\N. Fredbear.png"
+foto_fredbear= Image.open(ruta_fredbear)
+foto_fredbear = foto_fredbear.resize((100,100))
+foto_fredbear_tk = ImageTk.PhotoImage(foto_fredbear)
+
+btn_fredbear = tk.Button(frame_personajes, image=foto_fredbear_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[2]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_fredbear.place(x=840,y=200)
+
+#Funtime Foxy
+
+ruta_Ffoxy = "Assets\\Imagenes\\Personajes\\Funtime Foxy.png"
+foto_Ffoxy = Image.open(ruta_Ffoxy)
+foto_Ffoxy = foto_Ffoxy.resize((100,100))
+foto_Ffoxy_tk = ImageTk.PhotoImage(foto_Ffoxy)
+
+btn_Ffoxy = tk.Button(frame_personajes, image=foto_Ffoxy_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[3]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_Ffoxy.place(x=960,y=200)
+
+#Scrap Baby
+
+ruta_baby = "Assets\\Imagenes\\Personajes\\S. Baby.png"
+foto_baby = Image.open(ruta_baby)
+foto_baby = foto_baby.resize((100,100))
+foto_baby_tk = ImageTk.PhotoImage(foto_baby)
+
+btn_baby = tk.Button(frame_personajes, image=foto_baby_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[4]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_baby.place(x=1080,y=200)
+
+#Bonnie
+
+ruta_Bonnie = "Assets\\Imagenes\\Personajes\\Bonnie.png"
+foto_Bonnie = Image.open(ruta_Bonnie)
+foto_Bonnie = foto_Bonnie.resize((100,100))
+foto_Bonnie_tk = ImageTk.PhotoImage(foto_Bonnie)
+
+btn_Bonnie = tk.Button(frame_personajes, image=foto_Bonnie_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[5]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_Bonnie.place(x=600,y=350)
+
+#Mangle
+
+ruta_Mangle = "Assets\\Imagenes\\Personajes\\Mangle.png"
+foto_Mangle = Image.open(ruta_Mangle)
+foto_Mangle = foto_Mangle.resize((100,100))
+foto_Mangle_tk = ImageTk.PhotoImage(foto_Mangle)
+
+btn_Mangle = tk.Button(frame_personajes, image=foto_Mangle_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[6]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_Mangle.place(x=720,y=350)
+
+#Nightmarionne
+
+ruta_nightmarionne = "Assets\\Imagenes\\Personajes\\Nightmarionne.png"
+foto_nightmarionne = Image.open(ruta_nightmarionne)
+foto_nightmarionne = foto_nightmarionne.resize((100,100))
+foto_nightmarionne_tk = ImageTk.PhotoImage(foto_nightmarionne)
+
+btn_nightmarionne = tk.Button(frame_personajes, image=foto_nightmarionne_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[7]: ver_personajes(p["nombre"], p["HP"], p["ATK"],p["DEF"]))
+btn_nightmarionne.place(x=840,y=350)
+
+
+#Ennard
+
+ruta_Ennard = "Assets\\Imagenes\\Personajes\\Ennard.png"
+foto_Ennard = Image.open(ruta_Ennard)
+foto_Ennard = foto_Ennard.resize((100,100))
+foto_Ennard_tk = ImageTk.PhotoImage(foto_Ennard)
+
+btn_Ennard = tk.Button(frame_personajes, image=foto_Ennard_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[8]: ver_personajes(p["nombre"], p["HP"], p["ATK"],p["DEF"]))
+btn_Ennard.place(x=960,y=350)
+
+
+#Puppet
+
+ruta_Puppet = "Assets\\Imagenes\\Personajes\\Puppet.png"
+foto_Puppet = Image.open(ruta_Puppet)
+foto_Puppet = foto_Puppet.resize((100,100))
+foto_Puppet_tk = ImageTk.PhotoImage(foto_Puppet)
+
+btn_Puppet = tk.Button(frame_personajes, image=foto_Puppet_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[9]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_Puppet.place(x=1080,y=350)
+
+
+#Foxy
+
+ruta_foxy = "Assets\\Imagenes\\Personajes\\Foxy.png"
+foto_foxy = Image.open(ruta_foxy)
+foto_foxy = foto_foxy.resize((100,100))
+foto_foxy_tk = ImageTk.PhotoImage(foto_foxy)
+
+btn_foxy= tk.Button(frame_personajes, image=foto_foxy_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[10]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_foxy.place(x=600,y=500)
+
+
+#Toy Chica
+
+ruta_Tchica = "Assets\\Imagenes\\Personajes\\T. Chica.png"
+foto_Tchica = Image.open(ruta_Tchica)
+foto_Tchica = foto_Tchica.resize((100,100))
+foto_Tchica_tk = ImageTk.PhotoImage(foto_Tchica)
+
+btn_Tchica = tk.Button(frame_personajes, image=foto_Tchica_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[11]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_Tchica.place(x=720,y=500)
+
+
+#Nightmare Chica
+
+ruta_Nchica = "Assets\\Imagenes\\Personajes\\N. Chica.png"
+foto_Nchica = Image.open(ruta_Nchica)
+foto_Nchica = foto_Nchica.resize((100,100))
+foto_Nchica_tk = ImageTk.PhotoImage(foto_Nchica)
+
+btn_Nchica = tk.Button(frame_personajes, image=foto_Nchica_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[12]: ver_personajes(p["nombre"], p["HP"],p["ATK"],p["DEF"]))
+btn_Nchica.place(x=840,y=500)
+
+
+#Ballora
+
+ruta_ballora = "Assets\\Imagenes\\Personajes\\Ballora.png"
+foto_ballora = Image.open(ruta_ballora)
+foto_ballora = foto_ballora.resize((100,100))
+foto_ballora_tk = ImageTk.PhotoImage(foto_ballora)
+
+btn_ballora = tk.Button(frame_personajes, image=foto_ballora_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[13]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"]))
+btn_ballora.place(x=960,y=500)
+
+
+#Lefty
+
+ruta_lefty = "Assets\\Imagenes\\Personajes\\Lefty.png"
+foto_lefty = Image.open(ruta_lefty)
+foto_lefty = foto_lefty.resize((100,100))
+foto_lefty_tk = ImageTk.PhotoImage(foto_lefty)
+
+btn_lefty = tk.Button(frame_personajes, image=foto_lefty_tk, bd=0, relief="flat",
+                       command=lambda p=lista_personajes[14]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+btn_lefty.place(x=1080,y=500)
+
+
 
 
 #############################################
@@ -200,8 +416,8 @@ fondo_mapa = Image.open(ruta_fondo_mapa)
 fondo_mapa = fondo_mapa.resize((1280,720))
 fondo_mapa_tk = ImageTk.PhotoImage(fondo_mapa)
 
-fondo = tk.Label(frame_mapa, image=fondo_mapa_tk)
-fondo.place(x=0, y=0)
+fondo_ma= tk.Label(frame_mapa, image=fondo_mapa_tk)
+fondo_ma.place(x=0, y=0)
 
 def ir_a_mapa():
         frame_avatares.forget()
@@ -211,4 +427,4 @@ def ir_a_mapa():
 ######################
 #Iniciar ventana     #
 ######################
-frame_menu.mainloop()
+root.mainloop()
