@@ -1,0 +1,18 @@
+-- Personaje, HP, ATK, DEF --
+
+Freddy Fazbear,170,10,30
+Withered Bonnie,160,12,28
+Fredbear,165,11,27
+Funtime Foxy,155,13,25
+Scrap Baby,150,14,26
+Bonnie,90,33,7
+Mangle,85,35,5
+Nightmarionne,95,30,8
+Ennard,88,32,6
+puppet,92,31,9
+Foxy,120,20,18
+Withered Foxy,115,19,17
+Nightmare Chica,118,21,16
+Ballora,122,18,19
+Lefty,125,17,20
+
