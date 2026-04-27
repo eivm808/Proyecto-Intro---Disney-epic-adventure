@@ -1,6 +1,6 @@
 Freddy Fazbear,170,10,30
-Nightmare Fredbear,165,11,27
-Withered Bonnie,160,12,28
+Withered bonnie,160,11,27
+Nightmare Fredbear,165,12,28
 Funtime Foxy,155,13,25
 Scrap Baby,150,14,26
 Bonnie,90,33,7

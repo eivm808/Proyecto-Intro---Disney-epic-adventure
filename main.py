@@ -3,18 +3,18 @@
 
 
 
-###########################################
-#Importacion Tkinter y pillow             #
-###########################################
+
+#---- Importacion Tkinter y pillow ----------------------------------
+
 
 import tkinter as tk
 from PIL import Image, ImageTk
 
 
 
-#############################################
-#Ventana pricipal                           #
-#############################################
+
+#---- Ventana pricipal -----------------------------------------------------
+
 root = tk.Tk()
 
 frame_menu = tk.Frame(root, width=1280, height=720)
@@ -24,9 +24,9 @@ root.title("Proyecto 01 Intro")
 root.geometry("1280x720")
 
 
-#############################################
-#Imagen Fondo                               #
-#############################################
+
+#---- Imagen Fondo ---------------------------------------------------------------------
+
 
 ruta_fondomenu = "Assets\\Imagenes\\Fondos\\Menu freddy cabeza.png"
 fondomenu = Image.open(ruta_fondomenu)
@@ -36,9 +36,9 @@ fondomenu_tk = ImageTk.PhotoImage(fondomenu)
 fondo_me = tk.Label(frame_menu, image=fondomenu_tk)
 fondo_me.place(x=0, y=0)
 
-#############################################
-#Titulo del juego                           #
-#############################################
+
+#---- Titulo del juego ----------------------------------------------------------------------------------------------
+
 
 titulo = tk.Label(frame_menu, text="Broken", font=('Times new roman',75), fg="#7d687d", bg="black")
 titulo.place(x = 80, y = 100)
@@ -46,9 +46,8 @@ titulo2 = tk.Label(frame_menu, text="Circuits", font=('Times new roman',85), fg=
 titulo2.place(x = 80, y = 220)
 
 
-#############################################
-#Boton ABOUT y entry de nombre              #
-#############################################
+
+#---- Boton ABOUT y entry de nombre -----------------------------------------------------------------------------------------------
 
 #frame con la info
 
@@ -82,11 +81,10 @@ label_nombre.lift()
 entry_nombre = tk.Entry(frame_menu, textvariable = nombre_jugador, font=("Arial", 14))
 entry_nombre.place(x=80, y=400)
 
-#############################################
-#Ir a avatares                          #
-#############################################
 
-###Cambio a frame de avatares y entry nombre###
+#---- Ir a avatares --------------------------------------------------------------------------------------------------------------------------
+
+###---- Cambio a frame de avatares y entry nombre ----###
 
 frame_avatares = tk.Frame(root, width = 1280, height=720, bg="black")
 
@@ -115,11 +113,10 @@ botonStart.config(activeforeground="white")
 botonStart.place(x=80, y=480)
 
 
-#############################################
-#Seleccion de personajes                    #
-#############################################
 
-###FUNCIONES DE PERSONAJES###
+#---- Seleccion de personajes ------------------------------------------------------------------------------------------------------------------------------------  
+
+###FUNCIONES DE AVATARES###
 
 def elegir_avatar(avatar_img):
     global avatar_seleccionado
@@ -128,7 +125,7 @@ def elegir_avatar(avatar_img):
     frame_personajes.place(x=0, y=0)
 
 
-###Botones imagenes de personajes###
+###---- Botones imagenes de personajes ----###
 
 #AVATAR 1: PHONE GUY
 ruta_foto_phoneguy = "Assets\\Imagenes\\Avatares\\phoneguy.jpeg"
@@ -162,9 +159,8 @@ Michael.place(x=920, y=220)
 
 
 
-#############################################
-#Frame y seleccion de personajes            #
-#############################################
+
+#---- Frame y seleccion de personajes -------------------------------------------------------------------------------------------------------------------- 
 
 ###Fondo personajes###
 
@@ -179,9 +175,9 @@ fondo_pe = tk.Label(frame_personajes, image=fondo_personajes_tk)
 fondo_pe.place(x=0, y=0)
 
 
-###SELECCIONES DE BOTONES###
+###---- SELECCIONES DE BOTONES ----###
 
-#Leer archivo de texto
+#Funcion Leer archivo de texto
 
 def cargar_personajes():
      personajes = []
@@ -202,7 +198,7 @@ def cargar_personajes():
 
 lista_personajes = cargar_personajes()
 
-#Funcion ver personajes, Boton SELECT
+#Funcion ver personajes
 
 label_nombre_panel = tk.Label(frame_personajes, text="", font=("Courier New", 20), fg="green", bg="black")
 label_nombre_panel.place(x = 190, y=290)
@@ -227,7 +223,12 @@ def ver_personajes(nombre, hp, atk, defensa):
      label_atk.config(text=f"ATK: {atk}")
      label_def.config(text=f"DEF: {defensa}")
 
-###Botones###
+     if personaje_actual in personajes_seleccionados:
+          btnselect.config(text="DESELECT")
+     else:
+          btnselect.config(text="SELECT")
+
+#---- Botones ------------------------------------------#
 
 #Freddy
 
@@ -402,12 +403,66 @@ btn_lefty = tk.Button(frame_personajes, image=foto_lefty_tk, bd=0, relief="flat"
                        command=lambda p=lista_personajes[14]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
 btn_lefty.place(x=1080,y=500)
 
+###---- Botones y label: select y continuar----###
 
 
+#Funcion guardar personajes
+
+personajes_seleccionados = []
+
+def seleccionar_personajes():
+     global personajes_seleccionados, personaje_actual
+
+     if personaje_actual == None:
+          return
+     
+     if personaje_actual in personajes_seleccionados:
+          personajes_seleccionados.remove(personaje_actual)
+          btnselect.config(text="SELECT")
+          label_aviso.config(text=f"Seleccionados: {len(personajes_seleccionados)}/3")
+
+     elif len(personajes_seleccionados) < 3:
+          personajes_seleccionados.append(personaje_actual)
+          btnselect.config(text="DESELECT")
+          label_aviso.config(text=f"Seleccionados:{len(personajes_seleccionados)}/3")
+
+     else:
+          label_aviso.config(text="Ya tienes 3 personajes", fg='red')
+
+     if len(personajes_seleccionados) == 3:
+          btn_continuar.config(state="normal")
+          
+     else:
+          btn_continuar.config(state="disabled")
+
+#Boton select
+
+btnselect = tk.Button(frame_personajes, text="SELECT", font=('Courier new', 16), bg='black', fg='green', relief='flat',
+                      command=seleccionar_personajes)
+btnselect.place(x=250, y=520)
+btnselect.config(activebackground='black')
+btnselect.config(activeforeground='green')
+
+#---- Boton continuar ----------------------------------------------------------
+
+def ir_a_mapa():
+     frame_personajes.forget()
+     frame_mapa.place(x=0, y=0)
+    
+
+btn_continuar = tk.Button(frame_personajes, text="CONTINUAR", font=("Courier new", 14), bg='black', fg='green',
+                          state="disabled",command=ir_a_mapa)
+btn_continuar.place(x=1050, y=650)
+
+#---- Label -------------------------------------------------------------------
+
+label_aviso = tk.Label(frame_personajes, text="Seleccionados: 0/3", font=("Courier New", 12), bg="black", fg="green")
+label_aviso.place(x=250, y=550)
 
 #############################################
 #Mapa y seleccion de nivel                  #
 #############################################
+
 
 frame_mapa = tk.Frame(root, width = 1280, height=720, bg="black")
 
@@ -419,9 +474,7 @@ fondo_mapa_tk = ImageTk.PhotoImage(fondo_mapa)
 fondo_ma= tk.Label(frame_mapa, image=fondo_mapa_tk)
 fondo_ma.place(x=0, y=0)
 
-def ir_a_mapa():
-        frame_avatares.forget()
-        frame_mapa.place(x=0, y=0)
+
 
 
 ######################
