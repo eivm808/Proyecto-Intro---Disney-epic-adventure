@@ -4,11 +4,12 @@
 
 
 
-#---- Importacion Tkinter y pillow ----------------------------------
+#---- Importaciones ----------------------------------
 
 
 import tkinter as tk
 from PIL import Image, ImageTk
+import random
 
 
 
@@ -184,6 +185,7 @@ def cargar_personajes(archivo, personajes=[]):
      if linea == "":
           archivo.close()
           return personajes
+     
      linea = linea.strip()
      datos = linea.split(",")
      personaje = {
@@ -193,8 +195,8 @@ def cargar_personajes(archivo, personajes=[]):
           "DEF": int(datos[3]),
      }
      personajes.append(personaje)#agrega a la lista
-     archivo.close()
-     return personajes
+     
+     return cargar_personajes(archivo, personajes)
 
 archivo = open("data\\personajes.txt", "r")
 lista_personajes = cargar_personajes(archivo, [])
@@ -216,9 +218,15 @@ label_def.place(x=200, y=470)
 avatar_seleccionado = None
 personaje_actual = None
 
-def ver_personajes(nombre, hp, atk, defensa):
+def ver_personajes(nombre, hp, atk, defensa, icono, batalla):
      global personaje_actual
-     personaje_actual = {"nombre": nombre, "HP": hp, "ATK": atk, "DEF": defensa}
+     personaje_actual = {"nombre": nombre,
+                         "HP": hp,
+                         "ATK": atk,
+                         "DEF": defensa,
+                         "icono": icono,
+                         "batalla": batalla}
+     
      label_nombre_panel.config(text=nombre)
      label_hp.config(text=f"HP: {hp}")
      label_atk.config(text=f"ATK: {atk}")
@@ -233,175 +241,175 @@ def ver_personajes(nombre, hp, atk, defensa):
 
 #Freddy
 
-ruta_freddy = "Assets\\Imagenes\\Personajes\\Freddy.png"
+ruta_freddy = "Assets\\Imagenes\\Personajes\\Iconos\\Freddy.png"
 foto_freddy = Image.open(ruta_freddy)
 foto_freddy = foto_freddy.resize((100,100))
 foto_freddy_tk = ImageTk.PhotoImage(foto_freddy)
 
 btn_freddy = tk.Button(frame_personajes, image=foto_freddy_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[0]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[0]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Freddy.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\freddybody.png"))
 btn_freddy.place(x=600,y=200)
 
 
 #Withered bonnie
 
-ruta_wbonnie = "Assets\\Imagenes\\Personajes\\W. Bonnie.png"
+ruta_wbonnie = "Assets\\Imagenes\\Personajes\\Iconos\\W. Bonnie.png"
 foto_wbonnie = Image.open(ruta_wbonnie)
 foto_wbonnie = foto_wbonnie.resize((100,100))
 foto_wbonnie_tk = ImageTk.PhotoImage(foto_wbonnie)
 
 btn_wbonnie = tk.Button(frame_personajes, image=foto_wbonnie_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[1]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[1]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\W. Bonnie.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\Wbonniebody.png"))
 btn_wbonnie.place(x=720,y=200)
 
 #Nightmare Fredbear
 
-ruta_fredbear = "Assets\\Imagenes\\Personajes\\N. Fredbear.png"
+ruta_fredbear = "Assets\\Imagenes\\Personajes\\Iconos\\N. Fredbear.png"
 foto_fredbear= Image.open(ruta_fredbear)
 foto_fredbear = foto_fredbear.resize((100,100))
 foto_fredbear_tk = ImageTk.PhotoImage(foto_fredbear)
 
 btn_fredbear = tk.Button(frame_personajes, image=foto_fredbear_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[2]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[2]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\N. Fredbear.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\NFredbearbody.png"))
 btn_fredbear.place(x=840,y=200)
 
 #Funtime Foxy
 
-ruta_Ffoxy = "Assets\\Imagenes\\Personajes\\Funtime Foxy.png"
+ruta_Ffoxy = "Assets\\Imagenes\\Personajes\\Iconos\\Funtime Foxy.png"
 foto_Ffoxy = Image.open(ruta_Ffoxy)
 foto_Ffoxy = foto_Ffoxy.resize((100,100))
 foto_Ffoxy_tk = ImageTk.PhotoImage(foto_Ffoxy)
 
 btn_Ffoxy = tk.Button(frame_personajes, image=foto_Ffoxy_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[3]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[3]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Funtime Foxy.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\FFoxybody.png"))
 btn_Ffoxy.place(x=960,y=200)
 
 #Scrap Baby
 
-ruta_baby = "Assets\\Imagenes\\Personajes\\S. Baby.png"
+ruta_baby = "Assets\\Imagenes\\Personajes\\Iconos\\S. Baby.png"
 foto_baby = Image.open(ruta_baby)
 foto_baby = foto_baby.resize((100,100))
 foto_baby_tk = ImageTk.PhotoImage(foto_baby)
 
 btn_baby = tk.Button(frame_personajes, image=foto_baby_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[4]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[4]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\S. Baby.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\scrapbabybody.png"))
 btn_baby.place(x=1080,y=200)
 
 #Bonnie
 
-ruta_Bonnie = "Assets\\Imagenes\\Personajes\\Bonnie.png"
+ruta_Bonnie = "Assets\\Imagenes\\Personajes\\Iconos\\Bonnie.png"
 foto_Bonnie = Image.open(ruta_Bonnie)
 foto_Bonnie = foto_Bonnie.resize((100,100))
 foto_Bonnie_tk = ImageTk.PhotoImage(foto_Bonnie)
 
 btn_Bonnie = tk.Button(frame_personajes, image=foto_Bonnie_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[5]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[5]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Bonnie.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\bonniebody.png"))
 btn_Bonnie.place(x=600,y=350)
 
 #Mangle
 
-ruta_Mangle = "Assets\\Imagenes\\Personajes\\Mangle.png"
+ruta_Mangle = "Assets\\Imagenes\\Personajes\\Iconos\\Mangle.png"
 foto_Mangle = Image.open(ruta_Mangle)
 foto_Mangle = foto_Mangle.resize((100,100))
 foto_Mangle_tk = ImageTk.PhotoImage(foto_Mangle)
 
 btn_Mangle = tk.Button(frame_personajes, image=foto_Mangle_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[6]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[6]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Mangle.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\manglebody.png"))
 btn_Mangle.place(x=720,y=350)
 
 #Nightmarionne
 
-ruta_nightmarionne = "Assets\\Imagenes\\Personajes\\Nightmarionne.png"
+ruta_nightmarionne = "Assets\\Imagenes\\Personajes\\Iconos\\Nightmarionne.png"
 foto_nightmarionne = Image.open(ruta_nightmarionne)
 foto_nightmarionne = foto_nightmarionne.resize((100,100))
 foto_nightmarionne_tk = ImageTk.PhotoImage(foto_nightmarionne)
 
 btn_nightmarionne = tk.Button(frame_personajes, image=foto_nightmarionne_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[7]: ver_personajes(p["nombre"], p["HP"], p["ATK"],p["DEF"]))
+                       command=lambda p=lista_personajes[7]: ver_personajes(p["nombre"], p["HP"], p["ATK"],p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Nightmarionne.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\nightmarionnebody.png"))
 btn_nightmarionne.place(x=840,y=350)
 
 
 #Ennard
 
-ruta_Ennard = "Assets\\Imagenes\\Personajes\\Ennard.png"
+ruta_Ennard = "Assets\\Imagenes\\Personajes\\Iconos\\Ennard.png"
 foto_Ennard = Image.open(ruta_Ennard)
 foto_Ennard = foto_Ennard.resize((100,100))
 foto_Ennard_tk = ImageTk.PhotoImage(foto_Ennard)
 
 btn_Ennard = tk.Button(frame_personajes, image=foto_Ennard_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[8]: ver_personajes(p["nombre"], p["HP"], p["ATK"],p["DEF"]))
+                       command=lambda p=lista_personajes[8]: ver_personajes(p["nombre"], p["HP"], p["ATK"],p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Ennard.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\Ennardbody.png"))
 btn_Ennard.place(x=960,y=350)
 
 
 #Puppet
 
-ruta_Puppet = "Assets\\Imagenes\\Personajes\\Puppet.png"
+ruta_Puppet = "Assets\\Imagenes\\Personajes\\Iconos\\Puppet.png"
 foto_Puppet = Image.open(ruta_Puppet)
 foto_Puppet = foto_Puppet.resize((100,100))
 foto_Puppet_tk = ImageTk.PhotoImage(foto_Puppet)
 
 btn_Puppet = tk.Button(frame_personajes, image=foto_Puppet_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[9]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[9]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Puppet.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\puppetbody.png"))
 btn_Puppet.place(x=1080,y=350)
 
 
 #Foxy
 
-ruta_foxy = "Assets\\Imagenes\\Personajes\\Foxy.png"
+ruta_foxy = "Assets\\Imagenes\\Personajes\\Iconos\\Foxy.png"
 foto_foxy = Image.open(ruta_foxy)
 foto_foxy = foto_foxy.resize((100,100))
 foto_foxy_tk = ImageTk.PhotoImage(foto_foxy)
 
 btn_foxy= tk.Button(frame_personajes, image=foto_foxy_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[10]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[10]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Foxy.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\Foxybody.png"))
 btn_foxy.place(x=600,y=500)
 
 
 #Toy Chica
 
-ruta_Tchica = "Assets\\Imagenes\\Personajes\\T. Chica.png"
+ruta_Tchica = "Assets\\Imagenes\\Personajes\\Iconos\\T. Chica.png"
 foto_Tchica = Image.open(ruta_Tchica)
 foto_Tchica = foto_Tchica.resize((100,100))
 foto_Tchica_tk = ImageTk.PhotoImage(foto_Tchica)
 
 btn_Tchica = tk.Button(frame_personajes, image=foto_Tchica_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[11]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[11]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\T. Chica.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\toychicabody.png"))
 btn_Tchica.place(x=720,y=500)
 
 
 #Nightmare Chica
 
-ruta_Nchica = "Assets\\Imagenes\\Personajes\\N. Chica.png"
+ruta_Nchica = "Assets\\Imagenes\\Personajes\\Iconos\\N. Chica.png"
 foto_Nchica = Image.open(ruta_Nchica)
 foto_Nchica = foto_Nchica.resize((100,100))
 foto_Nchica_tk = ImageTk.PhotoImage(foto_Nchica)
 
 btn_Nchica = tk.Button(frame_personajes, image=foto_Nchica_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[12]: ver_personajes(p["nombre"], p["HP"],p["ATK"],p["DEF"]))
+                       command=lambda p=lista_personajes[12]: ver_personajes(p["nombre"], p["HP"],p["ATK"],p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\N. Chica.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\Nchicabody.png"))
 btn_Nchica.place(x=840,y=500)
 
 
 #Ballora
 
-ruta_ballora = "Assets\\Imagenes\\Personajes\\Ballora.png"
+ruta_ballora = "Assets\\Imagenes\\Personajes\\Iconos\\Ballora.png"
 foto_ballora = Image.open(ruta_ballora)
 foto_ballora = foto_ballora.resize((100,100))
 foto_ballora_tk = ImageTk.PhotoImage(foto_ballora)
 
 btn_ballora = tk.Button(frame_personajes, image=foto_ballora_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[13]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[13]: ver_personajes(p["nombre"], p["HP"], p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Ballora.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\ballorabody.png"))
 btn_ballora.place(x=960,y=500)
 
 
 #Lefty
 
-ruta_lefty = "Assets\\Imagenes\\Personajes\\Lefty.png"
+ruta_lefty = "Assets\\Imagenes\\Personajes\\Iconos\\Lefty.png"
 foto_lefty = Image.open(ruta_lefty)
 foto_lefty = foto_lefty.resize((100,100))
 foto_lefty_tk = ImageTk.PhotoImage(foto_lefty)
 
 btn_lefty = tk.Button(frame_personajes, image=foto_lefty_tk, bd=0, relief="flat",
-                       command=lambda p=lista_personajes[14]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"]))
+                       command=lambda p=lista_personajes[14]: ver_personajes(p["nombre"], p["HP"],p["ATK"], p["DEF"], "Assets\\Imagenes\\Personajes\\Iconos\\Lefty.png", "Assets\\Imagenes\\Personajes\\Iconos\\Batalla jugador\\leftybody.png"))
 btn_lefty.place(x=1080,y=500)
 
 ###---- Botones y label: select y continuar----###
@@ -485,8 +493,10 @@ fondo_ma.place(x=0, y=0)
 ### Funcion nivel 1 ###
 
 def ir_a_n1():
-     frame_mapa.forget()
-     frame_n1.place(x=0, y=0)
+     iniciar_batalla(
+         hollows[0],
+         "Assets\\Imagenes\\Fondos\\freddysdinner.png"
+     )
 
 ### Boton nivel 1 ###
 
@@ -511,8 +521,10 @@ frame_n1 = tk.Frame(root, width = 1280, height=720, bg='black')
 ### Funcion nivel 2 ###
 
 def ir_a_n2():
-     frame_mapa.forget()
-     frame_n2.place(x=0, y=0)
+      iniciar_batalla(
+         hollows[1],
+         "Assets\\Imagenes\\Fondos\\Sisterlocation.png"
+     )
 
 ### Boton nivel 2 ###
 
@@ -534,8 +546,10 @@ frame_n2 = tk.Frame(root, width = 1280, height=720, bg='black')
 ### Funcion nivel 3 ###
 
 def ir_a_n3():
-     frame_mapa.forget()
-     frame_n3.place(x=0, y=0)
+      iniciar_batalla(
+         hollows[2],
+         "Assets\\Imagenes\\Fondos\\Pizzaplex.png"
+     )
 
 ### Boton nivel 3 ###
 
@@ -558,8 +572,10 @@ frame_n3 = tk.Frame(root, width = 1280, height=720, bg='black')
 ### Funcion nivel 4 ###
 
 def ir_a_n4():
-     frame_mapa.forget()
-     frame_n4.place(x=0, y=0)
+      iniciar_batalla(
+         hollows[3],
+         "Assets\\Imagenes\\Fondos\\Fazbearfrights.png"
+     )
 
 
 ### Boton nivel 4 ###
@@ -584,8 +600,10 @@ frame_n4 = tk.Frame(root, width = 1280, height=720, bg='black')
 ### Funcion nivel 5 ###
 
 def ir_a_n5():
-     frame_mapa.forget()
-     frame_n5.place(x=0, y=0)
+      iniciar_batalla(
+         hollows[4],
+         "Assets\\Imagenes\\Fondos\\Thevoid.png"
+     )
 
 ### Boton nivel 5 ###
 
@@ -616,45 +634,45 @@ hollows = [
           "nombre": "Hollow 1",
           "mundo": "Freddy's Dinner",
           "personajes":[
-               {"nombre": "Chica", "HP": 100, "ATK": 18, "DEF": 12},
-               {"nombre": "Toy Bonnie", "HP": 95, "ATK": 20, "DEF": 10},
-               {"nombre": "Golden Freddy", "HP": 130, "ATK": 15, "DEF": 18},
+               {"nombre": "Chica", "HP": 100, "ATK": 18, "DEF": 12, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\chicabody.png"},
+               {"nombre": "Toy Bonnie", "HP": 95, "ATK": 20, "DEF": 10, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\toybonniebody.png"},
+               {"nombre": "Golden Freddy", "HP": 130, "ATK": 15, "DEF": 18, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\goldenfreddybody.png"}
           ]
      },
      {
          "nombre": "Hollow 2",
           "mundo": "Sister Location",
           "personajes":[
-               {"nombre": "Minireenas", "HP": 105, "ATK": 24, "DEF": 10},
-               {"nombre": "Funtime Freddy", "HP": 120, "ATK": 16, "DEF": 16},
-               {"nombre": "Circus Baby", "HP": 110, "ATK": 22, "DEF": 14}
+               {"nombre": "Minireena", "HP": 105, "ATK": 24, "DEF": 10, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\minireenabody.png"},
+               {"nombre": "Funtime Freddy", "HP": 120, "ATK": 16, "DEF": 16, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\FFreddybody.png"},
+               {"nombre": "Circus Baby", "HP": 110, "ATK": 22, "DEF": 14, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\circusbabybody.png"}
           ]
      },
      {
           "nombre": "Hollow 3",
           "mundo": "Pizzaplex",
           "personajes": [
-               {"nombre": "Glamrock Freddy", "HP": 130, "ATK": 20, "DEF": 18},
-               {"nombre": "Roxy", "HP": 110, "ATK": 26, "DEF": 12},
-               {"nombre": "Montgomery", "HP": 140, "ATK": 14, "DEF": 22}
+               {"nombre": "Glamrock Freddy", "HP": 130, "ATK": 20, "DEF": 18, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\GRfreddy.png"},
+               {"nombre": "Moon", "HP": 110, "ATK": 26, "DEF": 12, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\moonbody.png"},
+               {"nombre": "Montgomery", "HP": 140, "ATK": 14, "DEF": 22, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\montybody.png"}
           ]
      },
      {
           "nombre": "Hollow 4",
           "mundo": "Fazbear Frights",
           "personajes": [
-               {"nombre": "Springtrap", "HP": 140, "ATK": 24, "DEF": 16},
-               {"nombre": "Scraptrap", "HP": 130, "ATK": 26, "DEF": 14},
-               {"nombre": "Burntrap", "HP": 150, "ATK": 22, "DEF": 18}
+               {"nombre": "Springtrap", "HP": 140, "ATK": 24, "DEF": 16, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\springtrapbody.png"},
+               {"nombre": "Scraptrap", "HP": 130, "ATK": 26, "DEF": 14, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\scraptrapbody.png"},
+               {"nombre": "Burntrap", "HP": 150, "ATK": 22, "DEF": 18, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\burntrapbody.png"}
           ]
      },
      {
           "nombre": "Hollow 5",
           "mundo": "The void",
           "personajes": [
-               {"nombre": "Shadow Freddy", "HP": 160, "ATK": 28, "DEF": 20},
-               {"nombre": "Shadow bonnie", "HP": 150, "ATK": 30, "DEF": 18},
-               {"nombre": "Nightmare", "HP": 180, "ATK": 25, "DEF": 22}
+               {"nombre": "Shadow Freddy", "HP": 160, "ATK": 28, "DEF": 20, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\shadowfreddybody.png"},
+               {"nombre": "Shadow bonnie", "HP": 150, "ATK": 30, "DEF": 18, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\shadowbonniebody.png"},
+               {"nombre": "Nightmare", "HP": 180, "ATK": 25, "DEF": 22, "batalla": "Assets\\Imagenes\\Personajes\\Iconos\\Batalla hollow\\nightmarebody.png"}
           ]
      } 
 ]
@@ -672,16 +690,17 @@ puntaje_hollow = 0
 
 ###--------------------------------- Frames --------------------------------------------------------###
 
-#---- Frame para escoger personaje ------------------------------------------------------------------------------------------
-
-frame_selector = tk.Frame(root, bg="black", bd=2, relief="solid")
-
-label_selector = tk.Label(frame_selector, text="Escoge un personaje", font=("Courier new", 14), fg="green", bg="black")
-label_selector.pack(pady=10)
 
 #---- Frame de batalla -----------------------------------------------------------------------------------------------------------
 
 frame_batalla = tk.Frame(root, width=1280, height=720, bg="black")
+
+#---- Frame para escoger personaje ------------------------------------------------------------------------------------------
+
+frame_selector = tk.Frame(frame_batalla, bg="black", bd=2, relief="solid")
+
+label_selector = tk.Label(frame_selector, text="Escoge un personaje", font=("Courier new", 14), fg="green", bg="black")
+label_selector.pack(pady=10)
 
 #---- Fondo batalla ------------------------------------------------------------------------------------------------------------------
 
@@ -693,13 +712,13 @@ fondo_batalla.place(x=0, y=0)
 
 #---- Imagen personaje del hollow --------------------------------
 
-label_img_hollow = tk.Label(frame_batalla, bg="black")
-label_img_hollow.place(x=800,y=200)
+label_img_hollow = tk.Label(frame_batalla)
+label_img_hollow.place(x=850,y=150)
 
 #---- Imagen personaje del jugador --------------------------------
 
-label_img_jugador = tk.Label(frame_batalla, bg="black")
-label_img_jugador.place(x=200,y=200)
+label_img_jugador = tk.Label(frame_batalla)
+label_img_jugador.place(x=150,y=300)
 
 #---- Label mensaje -------------------------------------------------
 
@@ -735,10 +754,12 @@ label_puntaje.place(x=100, y=600)
 #---- Funcion que agrega botones de personajes disponibles -----------------------------------------------------------------
 
 def agregar_boton_personaje(indice):
-     if indice > len(personajes_seleccionados): #caso base
+     print(f"agregando boton indice {indice}")
+     if indice >= len(personajes_seleccionados): #caso base
           return
      
      p= personajes_seleccionados[indice]
+     print(f"personaje: {p['nombre']} HP_actual: {p['HP_actual']}")
 
      if p["HP_actual"] > 0: #muestra si no esta en KO
           tk.Button(frame_selector,
@@ -746,17 +767,17 @@ def agregar_boton_personaje(indice):
                     font=("Courier new", 12), fg="green", bg="black", relief="flat",
                     command=lambda per=p: seleccionar_en_batalla(per)).pack(pady=5)
           
-          agregar_boton_personaje(indice + 1) #se llama a si misma
+     agregar_boton_personaje(indice + 1) #se llama a si misma
 
 #---- Funcion que se ejecuta cuando el jugador apreta uno de los botones del selector -----------------------------------------------------------------
 
 def seleccionar_en_batalla(personaje):
-     global personaje_jugador_actual, indice_juagdor
+     global personaje_jugador_actual, indice_jugador
      personaje_jugador_actual = personaje #guarda el personaje escogido como actual
      indice_jugador = personajes_seleccionados.index(personaje)#actualiza el indice  para saber en que posicion de la lista esta ese personaje
      frame_selector.place_forget()#cierra el selector
      label_mensaje.config(text=f"Cambiaste a {personaje['nombre']}!")#muestra mensaje diciendo a quien cambio
-     actualizar_batalla #actualiza la pantalla con el nuevo personaje
+     actualizar_batalla() #actualiza la pantalla con el nuevo personaje
 
 
 #---- Funcion que limpia botones viejos del selector -----------------------------------------------------------------
@@ -774,6 +795,7 @@ def mostrar_selector():
      limpiar_botones(frame_selector.winfo_children())
      agregar_boton_personaje(0)
      frame_selector.place(x=400, y=200)
+     frame_selector.lift()
 
 
 
@@ -834,7 +856,7 @@ def iniciar_batalla(hollow, ruta_fondo):
      personaje_jugador_actual = personajes_seleccionados[0]
 
      frame_mapa.place_forget()
-     frame_nivel.place(x=0, y=0)
+     frame_batalla.place(x=0, y=0)
 
      actualizar_batalla()
 
@@ -849,15 +871,15 @@ def actualizar_batalla():
 
 
      #actualizar imagen de hollow
-     img_h = Image.open(personaje_hollow_actual["imagen"])
-     img_h = img_h.resize((150, 150))
+     img_h = Image.open(personaje_hollow_actual["batalla"])
+     img_h = img_h.resize((300, 300), Image.LANCZOS)
      img_h_tk = ImageTk.PhotoImage(img_h)
      label_img_hollow.config(image=img_h_tk)
      label_img_hollow.image = img_h_tk
 
      #actualizar imagen de jugador
-     img_j = Image.open(personaje_jugador_actual["imagen"])
-     img_j = img_j.resize((150, 150))
+     img_j = Image.open(personaje_jugador_actual["batalla"])
+     img_j = img_j.resize((300, 300), Image.LANCZOS)
      img_j_tk = ImageTk.PhotoImage(img_j)
      label_img_jugador.config(image=img_j_tk)
      label_img_jugador.image = img_j_tk
@@ -876,12 +898,14 @@ def atacar():
      if daño_jugador < 1:
           daño_jugador = 1
      personaje_hollow_actual["HP_actual"] -= daño_jugador
-     label_mensaje.config(text="{personaje_jugador_actual['nombre']} hizo {daño_jugador} de daño!")
+     label_mensaje.config(text=f"{personaje_jugador_actual['nombre']} hizo {daño_jugador} de daño!")
+     actualizar_batalla()
 
-     #---- si el personaje del hollow perdio ----
+     #---- verificar si el personaje del hollow perdio ----
      if personaje_hollow_actual["HP_actual"] <= 0:
           personaje_hollow_actual["HP_actual"] = 0
           puntaje_jugador += 1
+          
           
           #---- personaje del hollow pasa a ser del jugador con hp restaurado ----
           personajes_seleccionados.append({
@@ -889,7 +913,8 @@ def atacar():
                "HP": personaje_hollow_actual["HP"],
                "ATK": personaje_hollow_actual["ATK"],
                "DEF":personaje_hollow_actual["DEF"],
-               "HP_actual": personaje_hollow_actual["HP"]
+               "HP_actual": personaje_hollow_actual["HP"],
+               "batalla": personaje_hollow_actual["batalla"]
           })
 
           #---- Buscar siguiente personaje del hollow ----
@@ -899,21 +924,35 @@ def atacar():
           if nuevo_indice is None: #---- jugador gana cuando hollow sin personajes
                label_mensaje.config(text="Ganaste! El hollow fue derrotado")
                btn_atacar.config(state="disabled")
+               btn_volver_mapa.place(x=50, y=650)
                actualizar_batalla()
                return
           else:
                indice_hollow = nuevo_indice
                personaje_hollow_actual = hollow_actual["personajes"][indice_hollow]
-               label_mensaje.config(text=f"{personaje_hollow_actual["nombre"]} entra a pelear!")
+               label_mensaje.config(text=f"{personaje_hollow_actual['nombre']} entra a pelear!")
+               actualizar_batalla()
+               return
+     
+     
+     btn_atacar.config(state="disabled")
+     root.after(1000, turno_hollow)
 
      
      #---- Turno del hollow: ataca de forma aleatoria ---------
-     import random
+     
+def turno_hollow():
+     global personaje_jugador_actual, indice_jugador
+     
+     if random.random() > 0.3: #70% chance de atacar
+          daño_hollow = personaje_hollow_actual["ATK"] - personaje_jugador_actual["DEF"]
+          if daño_hollow < 1:
+               daño_hollow = 1
+          personaje_jugador_actual["HP_actual"] -= daño_hollow
+          label_mensaje.config(text=f"{personaje_hollow_actual['nombre']} hizo {daño_hollow} de daño!")
+     else:
+          label_mensaje.config(text=f"{personaje_hollow_actual['nombre']} fallo el ataque!")
 
-     daño_hollow = personaje_hollow_actual["ATK"] - personaje_jugador_actual["DEF"]
-     if daño_hollow < 1:
-          daño_hollow = 1
-     personaje_jugador_actual["HP_actual"] -= daño_hollow
 
      #---- Si el personaje del jugador perdio ----
      if personaje_jugador_actual["HP_actual"] <= 0:
@@ -926,6 +965,7 @@ def atacar():
           if nuevo_indice is None: #---- jugador sin personajes, hollow gano 
                label_mensaje.config(text="Perdiste, el hollow gano.")
                btn_atacar.config(state="disabled")
+               btn_volver_mapa.place(x=50, y=650)
                actualizar_batalla()
                return
           else: 
@@ -934,6 +974,7 @@ def atacar():
                label_mensaje.config(text=f"{personaje_jugador_actual['nombre']} entra a pelear!")
 
      actualizar_batalla()
+     btn_atacar.config(state="normal")
 
 #---- Cambiar personaje --------------------------------------------------------------------------------------------------------
 
@@ -974,12 +1015,8 @@ btn_volver_mapa = tk.Button(frame_batalla, text="VOLVER", font=("Courier new", 1
 btn_volver_mapa.place(x=50, y=650)
 
       
-
-
-
-
-
 ######################
 #Iniciar ventana     #
 ######################
+
 root.mainloop()
