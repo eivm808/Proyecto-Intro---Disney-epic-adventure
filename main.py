@@ -82,6 +82,12 @@ label_nombre.lift()
 entry_nombre = tk.Entry(frame_menu, textvariable = nombre_jugador, font=("Arial", 14))
 entry_nombre.place(x=80, y=400)
 
+#---- funcion boton volver a inicio -----------------------------------------------------------------------------------------------
+
+def volver_menu():
+     frame_avatares.place_forget()
+     frame_menu.place(x=0, y=0)
+
 
 #---- Ir a avatares --------------------------------------------------------------------------------------------------------------------------
 
@@ -95,6 +101,13 @@ def ir_a_avatares():
     else:   
         frame_menu.forget()
         frame_avatares.place(x=0, y=0)
+
+#---- boton volver a inicio -----------------------------------------------------------------------------------------------
+
+btn1_volvermenu = tk.Button(frame_avatares, text="VOLVER", fg="green", bg="black",
+                            command=volver_menu)
+btn1_volvermenu.place(x=200, y=420)
+btn1_volvermenu.lift()
 
 #fondo avatares 
 
@@ -180,7 +193,9 @@ fondo_pe.place(x=0, y=0)
 
 #Funcion Leer archivo de texto
 
-def cargar_personajes(archivo, personajes=[]):
+def cargar_personajes(archivo, personajes=None):
+     if personajes is None:
+          personajes = []
      linea = archivo.readline()
      if linea == "":
           archivo.close()
@@ -215,8 +230,14 @@ label_atk.place(x = 200, y=415)
 label_def = tk.Label(frame_personajes, text="", font=("Courier New", 18), fg="green", bg="black")
 label_def.place(x=200, y=470)
 
+
+#---- Variables globales ---------------------------------------------------------
+
 avatar_seleccionado = None
 personaje_actual = None
+personajes_originales = []
+
+#---- Funcion panel de seleccion ---------------------------------------------------------
 
 def ver_personajes(nombre, hp, atk, defensa, icono, batalla):
      global personaje_actual
@@ -237,7 +258,7 @@ def ver_personajes(nombre, hp, atk, defensa, icono, batalla):
      else:
           btnselect.config(text="SELECT")
 
-#---- Botones ------------------------------------------#
+#---- Botones de seleccion de personajes ------------------------------------------
 
 #Freddy
 
@@ -455,6 +476,8 @@ btnselect.config(activeforeground='green')
 #---- Boton continuar ----------------------------------------------------------
 
 def ir_a_mapa():
+     global personajes_originales
+     personajes_originales = copiar_lista(personajes_seleccionados, 0, [])
      frame_personajes.forget()
      frame_mapa.place(x=0, y=0)
     
@@ -488,11 +511,16 @@ fondo_ma.place(x=0, y=0)
 #Seleccion de nivel                         #
 #############################################
 
+#Variable global para saber que nivel se esta jugando
+nivel_actual = None
+
 #---- Nivel 1 --------------------------------------------
 
 ### Funcion nivel 1 ###
 
 def ir_a_n1():
+     global nivel_actual
+     nivel_actual = btn_n1
      iniciar_batalla(
          hollows[0],
          "Assets\\Imagenes\\Fondos\\freddysdinner.png"
@@ -521,9 +549,11 @@ frame_n1 = tk.Frame(root, width = 1280, height=720, bg='black')
 ### Funcion nivel 2 ###
 
 def ir_a_n2():
-      iniciar_batalla(
+     global nivel_actual
+     nivel_actual = btn_n02
+     iniciar_batalla(
          hollows[1],
-         "Assets\\Imagenes\\Fondos\\Sisterlocation.png"
+         "Assets\\Imagenes\\Fondos\\sisterlocation.png"
      )
 
 ### Boton nivel 2 ###
@@ -546,9 +576,11 @@ frame_n2 = tk.Frame(root, width = 1280, height=720, bg='black')
 ### Funcion nivel 3 ###
 
 def ir_a_n3():
-      iniciar_batalla(
+     global nivel_actual
+     nivel_actual = btn_n03
+     iniciar_batalla(
          hollows[2],
-         "Assets\\Imagenes\\Fondos\\Pizzaplex.png"
+         "Assets\\Imagenes\\Fondos\\pizzaplex.png"
      )
 
 ### Boton nivel 3 ###
@@ -572,9 +604,11 @@ frame_n3 = tk.Frame(root, width = 1280, height=720, bg='black')
 ### Funcion nivel 4 ###
 
 def ir_a_n4():
-      iniciar_batalla(
+     global nivel_actual
+     nivel_actual = btn_n04
+     iniciar_batalla(
          hollows[3],
-         "Assets\\Imagenes\\Fondos\\Fazbearfrights.png"
+         "Assets\\Imagenes\\Fondos\\fazbearfrights.png"
      )
 
 
@@ -600,9 +634,11 @@ frame_n4 = tk.Frame(root, width = 1280, height=720, bg='black')
 ### Funcion nivel 5 ###
 
 def ir_a_n5():
-      iniciar_batalla(
+     global nivel_actual
+     nivel_actual = btn_n05
+     iniciar_batalla(
          hollows[4],
-         "Assets\\Imagenes\\Fondos\\Thevoid.png"
+         "Assets\\Imagenes\\Fondos\\thevoid.png"
      )
 
 ### Boton nivel 5 ###
@@ -687,6 +723,9 @@ indice_hollow = 0
 indice_jugador = 0
 puntaje_jugador = 0
 puntaje_hollow = 0
+ruta_fondo_actual = None
+hollows_vencidos = 0
+
 
 ###--------------------------------- Frames --------------------------------------------------------###
 
@@ -700,46 +739,62 @@ frame_batalla = tk.Frame(root, width=1280, height=720, bg="black")
 frame_selector = tk.Frame(frame_batalla, bg="black", bd=2, relief="solid")
 
 label_selector = tk.Label(frame_selector, text="Escoge un personaje", font=("Courier new", 14), fg="green", bg="black")
-label_selector.pack(pady=10)
+label_selector.pack(pady=15)
 
 #---- Fondo batalla ------------------------------------------------------------------------------------------------------------------
 
 fondo_batalla = tk.Label(frame_batalla)
 fondo_batalla.place(x=0, y=0)
 
+#---- Frame reiniciar cuando se pierde ------------------------------------------------------------------------------------------------------------------
+
+frame_reiniciar = tk.Frame(frame_batalla, bg="white", bd=2, relief="solid")
+
 
 ###---------------------------------- Labels ----------------------------------------###
 
+#---- Label de reinicio ------------------------------------------------------------------------------------------------------------------
+
+tk.Label(frame_reiniciar, text="Perdiste!", font=("Courier New", 20), fg="red", bg="black").pack(pady=10)
+tk.Label(frame_reiniciar, text="Quieres reintentar?", font=("Courier New", 14), fg="white", bg="black").pack(pady=5)
+
+tk.Button(frame_reiniciar, text="REINTENTAR", font=("Courier New", 14), bg="black", fg="green",
+          command=lambda: [frame_reiniciar.place_forget(), iniciar_batalla(hollow_actual, ruta_fondo_actual)]).pack(pady=5)
+
+tk.Button(frame_reiniciar, text="VOLVER AL MAPA", font=("Courier New", 14), bg="black", fg="green",
+          command=lambda: [frame_reiniciar.place_forget(), frame_batalla.place_forget(), frame_mapa.place(x=0, y=0)]).pack(pady=5)
+
+
 #---- Imagen personaje del hollow --------------------------------
 
-label_img_hollow = tk.Label(frame_batalla)
+label_img_hollow = tk.Label(frame_batalla, bg="black")
 label_img_hollow.place(x=850,y=150)
 
 #---- Imagen personaje del jugador --------------------------------
 
-label_img_jugador = tk.Label(frame_batalla)
-label_img_jugador.place(x=150,y=300)
+label_img_jugador = tk.Label(frame_batalla, bg="black")
+label_img_jugador.place(x=150,y=250)
 
 #---- Label mensaje -------------------------------------------------
 
 label_mensaje = tk.Label(frame_batalla, text="", font=("Courier new", 12), fg="white", bg="black")
-label_mensaje.place(x=400, y=550)
+label_mensaje.place(x=550, y=550)
 
 #---- Label nombre y hp hollow -------------------------------------------------
 
 label_nombre_hollow = tk.Label(frame_batalla, text="", font=("Courier new", 16), fg="green", bg="black")
-label_nombre_hollow.place(x=800, y=50)
+label_nombre_hollow.place(x=800, y=65)
 
 label_hp_hollow = tk.Label(frame_batalla, text="", font=("Courier new", 14), fg="green", bg="black")
-label_hp_hollow.place(x=800, y=90)
+label_hp_hollow.place(x=800, y=100)
 
 #---- Label nombre y hp jugador -------------------------------------------------
 
 label_nombre_jugador = tk.Label(frame_batalla, text="", font=("Courier new", 16), fg = "green", bg="black")
-label_nombre_jugador.place(x=100, y=400)
+label_nombre_jugador.place(x=200, y=200)
 
 label_hp_jugador = tk.Label(frame_batalla, text="", font=("Courier new", 14), fg="green", bg="black")
-label_hp_jugador.place(x=100, y=440)
+label_hp_jugador.place(x=200, y=175)
 
 #---- Label puntaje -------------------------------------------------
 
@@ -769,12 +824,25 @@ def agregar_boton_personaje(indice):
           
      agregar_boton_personaje(indice + 1) #se llama a si misma
 
+#---- Funcion que busca en que posicion de la lista esta un personaje buscando por su nombre -----------------------------------------------------------------
+
+def buscar_indice(nombre, indice=0):
+     if indice >= len(personajes_seleccionados):
+          return 0
+     if personajes_seleccionados[indice]["nombre"] == nombre:
+          return indice
+     return buscar_indice(nombre, indice + 1) 
+
+
 #---- Funcion que se ejecuta cuando el jugador apreta uno de los botones del selector -----------------------------------------------------------------
 
 def seleccionar_en_batalla(personaje):
      global personaje_jugador_actual, indice_jugador
+
      personaje_jugador_actual = personaje #guarda el personaje escogido como actual
-     indice_jugador = personajes_seleccionados.index(personaje)#actualiza el indice  para saber en que posicion de la lista esta ese personaje
+
+     indice_jugador = buscar_indice(personaje["nombre"])#actualiza el indice  para saber en que posicion de la lista esta ese personaje
+
      frame_selector.place_forget()#cierra el selector
      label_mensaje.config(text=f"Cambiaste a {personaje['nombre']}!")#muestra mensaje diciendo a quien cambio
      actualizar_batalla() #actualiza la pantalla con el nuevo personaje
@@ -829,11 +897,27 @@ def siguiente_hollow(indice):
           return indice
      return siguiente_hollow(indice + 1)
 
+#---- Funcion que hace una copia de la lista de personajes originales cada vez que empieza batalla -------------------------------------------------------------------------------------------------
+
+def copiar_lista(lista, indice=0, nueva=None):
+     if nueva is None:
+          nueva = []
+     if indice >= len(lista):
+          return nueva
+     nueva.append(lista[indice].copy())
+     return copiar_lista(lista, indice + 1, nueva)
+
+
 #---- Iniciar batalla -------------------------------------------------------------------------------------------------
 
 def iniciar_batalla(hollow, ruta_fondo):
      global hollow_actual, personaje_hollow_actual, personaje_jugador_actual
-     global indice_hollow, indice_jugador, puntaje_jugador, puntaje_hollow
+     global indice_hollow, indice_jugador, puntaje_jugador, puntaje_hollow, ruta_fondo_actual
+     global personajes_seleccionados
+
+     ruta_fondo_actual = ruta_fondo
+     personajes_seleccionados = copiar_lista(personajes_originales, 0, [])
+
 
      #Cambiar fondo segun nivel
      fondo_img = Image.open(ruta_fondo)
@@ -858,6 +942,10 @@ def iniciar_batalla(hollow, ruta_fondo):
      frame_mapa.place_forget()
      frame_batalla.place(x=0, y=0)
 
+     btn_atacar.config(state="normal")
+     btn_volver_mapa.place_forget()
+     frame_reiniciar.place_forget()
+
      actualizar_batalla()
 
 
@@ -868,11 +956,13 @@ def actualizar_batalla():
      label_hp_jugador.config(text=f"HP: {personaje_jugador_actual['HP_actual']}")
      label_nombre_hollow.config(text=personaje_hollow_actual["nombre"])
      label_hp_hollow.config(text=f"HP: {personaje_hollow_actual['HP_actual']}")
+     label_puntaje.config(text=f"Puntaje: {puntaje_jugador}")
+
 
 
      #actualizar imagen de hollow
      img_h = Image.open(personaje_hollow_actual["batalla"])
-     img_h = img_h.resize((300, 300), Image.LANCZOS)
+     img_h = img_h.resize((300, 300))
      img_h_tk = ImageTk.PhotoImage(img_h)
      label_img_hollow.config(image=img_h_tk)
      label_img_hollow.image = img_h_tk
@@ -922,9 +1012,21 @@ def atacar():
           nuevo_indice = siguiente_hollow(indice_hollow)
 
           if nuevo_indice is None: #---- jugador gana cuando hollow sin personajes
-               label_mensaje.config(text="Ganaste! El hollow fue derrotado")
-               btn_atacar.config(state="disabled")
-               btn_volver_mapa.place(x=50, y=650)
+               global hollows_vencidos
+               hollows_vencidos += 1
+               nivel_actual.config(state="disabled")
+
+               if hollows_vencidos == 5: #gano todos los hollows
+                    frame_batalla.place_forget()
+                    frame_personajes.place_forget()
+                    frame_victoria.place(x=0, y=0)
+                    frame_victoria.lift()
+               else:
+                    label_mensaje.config(text="Ganaste! El hollow fue derrotado")
+                    btn_atacar.config(state="disabled")
+                    btn_volver_mapa.place(x=50, y=650)
+                    nivel_actual.config(state="disabled") #deshabilita el boton cuando se gana el nivel
+               
                actualizar_batalla()
                return
           else:
@@ -963,9 +1065,9 @@ def turno_hollow():
           nuevo_indice = siguiente_jugador(indice_jugador)
 
           if nuevo_indice is None: #---- jugador sin personajes, hollow gano 
-               label_mensaje.config(text="Perdiste, el hollow gano.")
+               frame_reiniciar.place(x=400, y=200)
+               frame_reiniciar.lift()
                btn_atacar.config(state="disabled")
-               btn_volver_mapa.place(x=50, y=650)
                actualizar_batalla()
                return
           else: 
@@ -1000,7 +1102,7 @@ def cambiar_personaje():
 
 btn_atacar = tk.Button(frame_batalla, text="ATACAR", font=("Courier new", 14), bg="black", fg="green", relief="flat",
                        command=atacar)
-btn_atacar.place(x=100, y=620)
+btn_atacar.place(x=500, y=620)
 
 #---- Boton cambiar de personaje -------------------------------------------------
 
@@ -1015,6 +1117,27 @@ btn_volver_mapa = tk.Button(frame_batalla, text="VOLVER", font=("Courier new", 1
 btn_volver_mapa.place(x=50, y=650)
 
       
+###---------------------------------- Frame victoria ----------------------------------------###
+
+frame_victoria = tk.Frame(root, width=1280, height=720, bg="black")
+
+#--- Imagen ----------------------------------------------------
+
+ruta_victoria = "Assets\\Imagenes\\Fondos\\Shiftcomplete.jpg"
+fondo_victoria = Image.open(ruta_victoria)
+fondo_victoria = fondo_victoria.resize((1280, 720))
+fondo_victoria_tk = ImageTk.PhotoImage(fondo_victoria)
+
+fondo_vic = tk.Label(frame_victoria, image=fondo_victoria_tk)
+fondo_vic.place(x=0, y=0)
+
+#---- Label y volver a menu -----------------------------------------
+
+
+tk.Button(frame_victoria, text="VOLVER AL MENU", font=("Courier New", 16), bg="black", fg="green",
+          command=lambda: [frame_victoria.place_forget(), frame_menu.place(x=0, y=0)]).place(x=500, y=500)
+
+
 ######################
 #Iniciar ventana     #
 ######################
